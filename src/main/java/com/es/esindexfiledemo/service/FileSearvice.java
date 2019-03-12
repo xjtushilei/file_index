@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 public class FileSearvice {
@@ -22,17 +23,25 @@ public class FileSearvice {
 
 
     @Value("${file.path}")
-    String filePath;
+    public String filePath;
 
 
-    public void index() {
+    public long index() {
+        long count=0;
         File rootFilePath = new File(filePath);
-        System.out.println("文件夹是：" + filePath);
-        System.out.println("发现文件个数：" + Objects.requireNonNull(rootFilePath.listFiles()).length);
+        System.out.println("file package is：" + filePath);
+        System.out.println("find files：" + Objects.requireNonNull(rootFilePath.listFiles()).length);
 
-        for (File file : Objects.requireNonNull(rootFilePath.listFiles())) {
+        for (File file : FileUtils.listFiles(rootFilePath, null, true)) {
+            String id = Base64.getEncoder().encodeToString(file.getAbsolutePath().getBytes());
+            if (indexContentRepository.findById(id).isPresent()) {
+                System.out.println("deal file:" + file.getAbsolutePath() + "\t" + "this file had indexed");
+                continue;
+            } else {
+                System.out.println("deal file:" + file.getAbsolutePath());
+            }
             try {
-                String id = Base64.getEncoder().encodeToString(file.getAbsolutePath().getBytes());
+
                 String title = file.getName();
                 String type = "";
                 String content = "";
@@ -71,12 +80,14 @@ public class FileSearvice {
                     content = ParseText.parse(FileUtils.readFileToByteArray(file), "xlsx");
                     type = "xlsx";
                 }
-                IndexContent indexContent = new IndexContent(id, title, space, content, type, date);
+                IndexContent indexContent = new IndexContent(id, title, UUID.randomUUID().toString(), file.getAbsolutePath(), space, content, type, date);
                 indexContentRepository.index(indexContent);
+                count++;
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
         }
+        return count;
     }
 }

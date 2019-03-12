@@ -13,7 +13,8 @@ public class IndexRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        System.out.println("index start");
         fileSearvice.index();
-        System.out.println("索引文件结束");
+        System.out.println("index end");
     }
 }

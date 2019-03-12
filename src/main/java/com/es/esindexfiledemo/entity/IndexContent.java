@@ -18,6 +18,12 @@ public class IndexContent {
     @Field(type = FieldType.Text)
     private String title;
 
+    @Field(type = FieldType.Keyword)
+    private String uuid;
+
+    @Field(type = FieldType.Keyword)
+    private String realPath;
+
     @Field(type = FieldType.Long)
     private long space;
 
@@ -51,13 +57,31 @@ public class IndexContent {
     public IndexContent() {
     }
 
-    public IndexContent(String id, String title, long space, String content, String type, Date date) {
+    public IndexContent(String id, String title, String uuid, String realPath, long space, String content, String type, Date date) {
         this.id = id;
         this.title = title;
+        this.uuid = uuid;
+        this.realPath = realPath;
         this.space = space;
         this.content = content;
         this.type = type;
         this.date = date;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getRealPath() {
+        return realPath;
+    }
+
+    public void setRealPath(String realPath) {
+        this.realPath = realPath;
     }
 
     public long getSpace() {
