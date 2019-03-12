@@ -1,0 +1,39 @@
+
+1. 安装jdk1.8
+
+如果之前系统配置了java请验证一下版本，确保是jdk1.8。
+
+配置jdk1.8 请严格按照如下方式配置：https://jingyan.baidu.com/article/6dad5075d1dc40a123e36ea3.html
+
+
+2. elasticsearch（简称es） 下载
+
+该软件是从官网下载，并且加入中文分词插件的。
+
+地址：https://dev-1252377804.cos.ap-beijing.myqcloud.com/elasticsearch-6.2.4.zip
+
+
+
+3. 编译系统可运行的文件
+
+在源文件根目录下运行 “mvnw package”，第一次编译速度很慢，需要联网下载额外的jar包。
+
+
+4. 运行系统
+
+4.1 先运行es：先es解压，解压到剩余磁盘空间比较多的地方。es中存的文件都会在es的文件夹里。然后打开es解压后目录的bin目录，双击“elasticsearch.bat”，等他启动结束后。（启动结束的标志是打出类似日志：[2019-03-12T13:32:13,272][INFO ][o.e.n.Node               ] [yeD1V_w] started）
+
+4.2 将想要搜索的文件放在指定目录：“D:\\es-index-data\\” 下
+
+4.3 第三条中编译好的系统可运行文件在源文件根目录的target目录下的 “es-index-file-demo-0.0.1.jar”，打开cmd命令行，cd到该目录下（不用人工cd的技巧是，打开该目录，按住键盘shift，空白处鼠标右击，点击类似于“在此处打开cmd命令行”）（不会的请自行百度），在该目录下执行：“java -jar es-index-file-demo-0.0.1.jar”
+
+
+5. 使用系统
+
+系统会在第一次启动时候，自动执行一次索引文件（“D:\\es-index-data\\”目录下的所有文件）
+
+5.1. 系统首页： http://localhost:8080/
+5.2. 新赠了文件，请在浏览器中输入 http://localhost:8080/reIndex
+5.3. 想删除之前的所有文件：请在浏览器中输入 http://localhost:8080/deleteAll
+
+其中localhost 是本机ip，如果系统部署在服务器上，其他电脑访问请改成服务器的ip或域名，如果不能访问，首先在服务器访问“http://localhost:8080/1.txt”查看能否有输出，如果正常输出，则是服务器的防火墙的问题。

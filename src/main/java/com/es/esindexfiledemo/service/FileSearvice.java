@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.Base64;
+import java.util.Collection;
 import java.util.Date;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -27,12 +27,13 @@ public class FileSearvice {
 
 
     public long index() {
-        long count=0;
+        long count = 0;
         File rootFilePath = new File(filePath);
         System.out.println("file package is：" + filePath);
-        System.out.println("find files：" + Objects.requireNonNull(rootFilePath.listFiles()).length);
+        Collection<File> files = FileUtils.listFiles(rootFilePath, null, true);
+        System.out.println("find files：" + files.size());
 
-        for (File file : FileUtils.listFiles(rootFilePath, null, true)) {
+        for (File file : files) {
             String id = Base64.getEncoder().encodeToString(file.getAbsolutePath().getBytes());
             if (indexContentRepository.findById(id).isPresent()) {
                 System.out.println("deal file:" + file.getAbsolutePath() + "\t" + "this file had indexed");
